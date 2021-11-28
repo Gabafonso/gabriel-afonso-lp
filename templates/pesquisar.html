@@ -8,10 +8,10 @@
 
     <div class="container">
 
-        <h2>Lista de Filmes do Universo Cinematográfico da Marvel</h2><br/>
+        <h2>Lista de Filmes do Universo Cinematográfico da Marvel</h2></br>
 
         <form action="/pesquisar" method="POST">
-            <input type="text" placeholder="Encontre um filme por seu título ou ano de lançamento..."  class="form-control" name="pesquisa"/>
+            Remover um Filme: <input type="text" placeholder="Encontre um filme por seu título ou ano de lançamento..."  class="form-control" name="pesquisa"/>
             <button class="btn btn-success">Pesquisar</button>
         </form><br/>
 
@@ -22,7 +22,7 @@
                 <th scope="col">Ano de Lançamento</th>
                 <th scope="col">Nota no IMDb</th>
             </tr>
-            {% for filme in filmes: %}
+            {% for filme in filmes_pesquisa: %}
             <tr>
                 <td>{{ filme['id'] }}</td>
                 <td>{{ filme['titulo'] }}</td>

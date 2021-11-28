@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 
-app = Flask(__name__)
+app = Flask(__name__)   #sudo fuser -k xxxx/tcp
 
 filmes = [
     {"titulo": "Homem de Ferro", "ano": "2008", "nota": "7,9", "id": "0" },
@@ -12,7 +12,7 @@ filmes = [
 
 @app.route('/')
 def index():
-    return render_template("index.html", lista=filmes)
+    return render_template("index.html", filmes=filmes)
 
 @app.route('/adicionar')
 def adicionar():
@@ -23,26 +23,43 @@ def save():
     titulo = request.form['titulo']
     ano = request.form['ano']
     nota = request.form['nota']
-    for indice, i in enumerate(filmes):
-        if int(indice) != int(i['id']):
-            id = indice
-        else:
-            id = len(filmes)
-    filme = { "titulo": titulo, "ano": ano, "nota": nota, "id": id}
-    filmes.append(filme)
-    return redirect('https://5000-silver-ferret-gf7d8nyr.ws-prod-ws-us19.gitpod.io/')
+    id = request.form['id']
+    if titulo == '' or ano == '' or nota == '' or id == '':
+        return render_template('erro.html')
+    elif id.isnumeric():
+        filme = { "titulo": titulo, "ano": ano, "nota": nota, "id": id}
+        filmes.append(filme)
+        return redirect('https://5000-silver-ferret-gf7d8nyr.ws-us17.gitpod.io/')
+    else:
+        return render_template('erro.html')
+    #return render_template("index.html", lista=filmes)
 
 @app.route('/deletar', methods=['POST'])
 def deletar():
     id = request.form['id']
-    for i in filmes:
-        if int(id) == int(i['id']):
-            filmes.pop(int(id))
-            break
+    if id.isnumeric():
+        for i in filmes:
+            if int(id) == int(i['id']):
+                filmes.pop(int(id))
+                break
+        else:
+            return render_template("erro.html")
     else:
         return render_template("erro.html")
-    return redirect('https://5000-silver-ferret-gf7d8nyr.ws-prod-ws-us19.gitpod.io/')
-   
+    return redirect('https://5000-silver-ferret-gf7d8nyr.ws-us17.gitpod.io/')
+    #return render_template("index.html", lista=filmes)
+
+@app.route('/pesquisar', methods=['POST'])
+def pesquisar():
+    filmes_pesquisa=[]
+    pesquisa = request.form['pesquisa']
+    if pesquisa > '':
+        for filme in filmes:
+            if pesquisa.lower() in filme['titulo'].lower() or pesquisa == filme['ano']:
+                filmes_pesquisa.append(filme)
+        return render_template("pesquisar.html", filmes_pesquisa=filmes_pesquisa)
+    else:
+        return render_template("erro.html")
 
 
 
