@@ -29,7 +29,7 @@ def save():
     elif id.isnumeric():
         filme = { "titulo": titulo, "ano": ano, "nota": nota, "id": id}
         filmes.append(filme)
-        return redirect('https://5000-silver-ferret-gf7d8nyr.ws-us17.gitpod.io/')
+        return redirect('https://5000-rose-horse-b26oq6qa.ws-us17.gitpod.io/')
     else:
         return render_template('erro.html')
     #return render_template("index.html", lista=filmes)
@@ -37,6 +37,8 @@ def save():
 @app.route('/deletar', methods=['POST'])
 def deletar():
     id = request.form['id']
+    if id == '':
+        return redirect('https://5000-rose-horse-b26oq6qa.ws-us17.gitpod.io/')
     if id.isnumeric():
         for i in filmes:
             if int(id) == int(i['id']):
@@ -46,7 +48,7 @@ def deletar():
             return render_template("erro.html")
     else:
         return render_template("erro.html")
-    return redirect('https://5000-silver-ferret-gf7d8nyr.ws-us17.gitpod.io/')
+    return redirect('https://5000-rose-horse-b26oq6qa.ws-us17.gitpod.io/')
     #return render_template("index.html", lista=filmes)
 
 @app.route('/pesquisar', methods=['POST'])
